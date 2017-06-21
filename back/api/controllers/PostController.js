@@ -14,10 +14,22 @@ module.exports = {
    */
   create: function (req, res) {
     // extraktiranje categoryname iz request objekta
-      let categoryName = req.param('category_name');
+      let categoryName = req.param('category_name'),
+          title = req.param('title'),
+          content = req.param('content'),
+          userId = req.param( 'user_id');
     // validiranje category namea
       if(!categoryName){
         return res.badRequest({err: 'invalid category_name'});
+      }
+      if(!title){
+        return res.badRequest({err: 'invalid title'});
+      }
+      if(!content){
+        return res.badRequest({err: 'invalid content'});
+      }
+      if(!userId){
+        return res.badRequest({err: 'invalid userId'});
       }
       
     // kreiranje nove kategorije
@@ -29,7 +41,18 @@ module.exports = {
           return res.serverError(err);
         }
 
-        return res.ok(category);
+        Post.create({
+          title,
+          content,
+          _user:userId,
+          _category: category.id
+        })
+        .exec( (err,post)=>{
+          if(err){
+            return res.serverError(err);
+          }
+          return res.ok({post,category});
+        })
       })
     // ako je pojavi error posalji severError u responsu
 
