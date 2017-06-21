@@ -21,7 +21,7 @@ module.exports = {
     _category: {
       model:'category',
       required: true,
-      columnname:'category_id'
+      columnName:'category_id'
     }
   }
 };

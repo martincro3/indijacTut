@@ -13,9 +13,29 @@ module.exports = {
    * `PostController.create()`
    */
   create: function (req, res) {
-    return res.json({
-      todo: 'create() is not implemented yet!'
-    });
+    // extraktiranje categoryname iz request objekta
+      let categoryName = req.param('category_name');
+    // validiranje category namea
+      if(!categoryName){
+        return res.badRequest({err: 'invalid category_name'});
+      }
+      
+    // kreiranje nove kategorije
+      Category.create({
+        name: categoryName
+      })
+      .exec( (err,category)=>{
+        if(err){
+          return res.serverError(err);
+        }
+
+        return res.ok(category);
+      })
+    // ako je pojavi error posalji severError u responsu
+
+    // posalji novo kreiranu kategoriju u responsu
+
+
   },
 
 
