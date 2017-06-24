@@ -36,24 +36,20 @@ module.exports = {
       Category.create({
         name: categoryName
       })
-      .exec( (err,category)=>{
-        if(err){
-          return res.serverError(err);
-        }
-
-        Post.create({
+      .then(categoy => {
+     
+        return Post.create({
           title,
           content,
           _user:userId,
           _category: category.id
         })
-        .exec( (err,post)=>{
-          if(err){
-            return res.serverError(err);
-          }
-          return res.ok({post,category});
-        })
       })
+
+     .then ( post => {
+       return res.ok({category,post});
+     }) 
+     .catch(err=> res.serverError(err));
     // ako je pojavi error posalji severError u responsu
 
     // posalji novo kreiranu kategoriju u responsu
