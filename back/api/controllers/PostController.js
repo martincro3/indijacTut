@@ -36,13 +36,15 @@ module.exports = {
       Category.create({
         name: categoryName
       })
-      .then(categoy => {
+      .then(_category => {
      
+        category= _category;
+        
         return Post.create({
           title,
           content,
           _user:userId,
-          _category: category.id
+          _category: _category.id
         })
       })
 
